@@ -1,3 +1,2 @@
 #!/bin/sh
-./mvnw.sh clean install
-./mvnw.sh spring-boot:run
+./mvnw.sh spring-boot:run -Dspring-boot.run.arguments=--server.port=8542
