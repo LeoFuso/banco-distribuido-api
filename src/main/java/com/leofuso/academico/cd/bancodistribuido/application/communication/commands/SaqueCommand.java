@@ -1,5 +1,6 @@
 package com.leofuso.academico.cd.bancodistribuido.application.communication.commands;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 
@@ -22,6 +23,7 @@ public class SaqueCommand implements OperacaoBancariaCommand {
         this.valor = valor;
     }
 
+    @JsonCreator
     public static SaqueCommand create(@JsonProperty("conta_id") Integer contaId,
                                       @JsonProperty("valor") Double valor) {
         return new SaqueCommand(contaId, valor);

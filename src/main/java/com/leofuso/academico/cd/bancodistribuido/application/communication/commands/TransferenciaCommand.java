@@ -1,5 +1,7 @@
 package com.leofuso.academico.cd.bancodistribuido.application.communication.commands;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 
@@ -27,6 +29,7 @@ public class TransferenciaCommand implements OperacaoBancariaCommand {
         this.valor = valor;
     }
 
+    @JsonCreator
     public static TransferenciaCommand create(@JsonProperty("conta_origem_id") Integer contaOrigemId,
                                               @JsonProperty("conta_destino_id") Integer contaDestinoId,
                                               @JsonProperty("valor") Double valor) {
@@ -34,6 +37,7 @@ public class TransferenciaCommand implements OperacaoBancariaCommand {
     }
 
     @Override
+    @JsonIgnore
     public Integer getContaId() {
         return contaOrigemId;
     }

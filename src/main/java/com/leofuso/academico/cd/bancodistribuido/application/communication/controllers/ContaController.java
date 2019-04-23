@@ -38,8 +38,7 @@ public class ContaController {
 
     @RequestMapping(path = {"/"},
             method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE,
-            consumes = MediaType.APPLICATION_JSON_VALUE)
+            produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Resources<Resource<ContaResource>>> findAll() {
 
         List<ContaResource> contas = facade.findAll();
@@ -97,8 +96,7 @@ public class ContaController {
 
     @RequestMapping(path = {"/{id}"},
             method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE,
-            consumes = MediaType.APPLICATION_JSON_VALUE)
+            produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Resource<ContaResource>> findOneById(@NotNull @PathVariable Integer id) {
 
         ContaResource conta = facade.findOneById(id);

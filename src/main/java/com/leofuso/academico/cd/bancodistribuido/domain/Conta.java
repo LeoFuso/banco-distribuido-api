@@ -29,11 +29,11 @@ public class Conta implements Serializable {
 
     Conta() { /* empty */ }
 
-    static Conta produce(Double saldoInicial, String titular) {
+    public static Conta produce(Double saldoInicial, String email) {
 
         final Conta novaConta = new Conta();
         novaConta.saldo = Objects.requireNonNull(saldoInicial);
-        novaConta.email = Objects.requireNonNull(titular);
+        novaConta.email = Objects.requireNonNull(email);
 
         return novaConta;
     }
@@ -46,7 +46,7 @@ public class Conta implements Serializable {
         Objects.requireNonNull(valor);
 
         if (valor > this.saldo) {
-            throw new IllegalStateException(String.format("Conta não possui saldo suficiente: Saldo [ %.2f ]", this.saldo));
+            throw new IllegalArgumentException(String.format("Conta não possui saldo suficiente: Saldo [ %.2f ]", this.saldo));
         }
 
         this.saldo -= valor;
@@ -57,7 +57,7 @@ public class Conta implements Serializable {
         Objects.requireNonNull(valor);
 
         if (this.equals(destino)) {
-            throw new IllegalStateException("Transferências internas não são permitidas");
+            throw new IllegalArgumentException("Transferências internas não são permitidas");
         }
 
         this.saque(valor);
