@@ -12,4 +12,4 @@ $ ./run-server.sh
 ```
 
 _Observação: Este script só está preparado para o ambiente Linux e assume que um runtime
-Java já esteja configurado com_
+Java já esteja configurado com `JAVA_HOME` configurado_
