@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.leofuso.academico.computacao-distribuida</groupId>
-	<artifactId>banco-distribuido</artifactId>
+	<artifactId>banco-distribuido-api</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>banco-distribuido</name>
-	<description>Projeto da Disciplina de Computação Distribuída</description>
+	<name>banco-distribuido-api</name>
+	<description>Projeto da Disciplina de Computação Distribuída - Server App Banco Distribuído</description>
 
 	<properties>
 		<java.version>1.8</java.version>

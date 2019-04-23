@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/banco-distribuido.iml" filepath="$PROJECT_DIR$/banco-distribuido.iml" />
+      <module fileurl="file://$PROJECT_DIR$/banco-distribuido-api.iml" filepath="$PROJECT_DIR$/banco-distribuido-api.iml" />
     </modules>
   </component>
 </project>
