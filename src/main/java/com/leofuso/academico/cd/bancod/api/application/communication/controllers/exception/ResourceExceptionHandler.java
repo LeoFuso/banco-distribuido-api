@@ -8,6 +8,7 @@ import com.leofuso.academico.cd.bancod.api.application.exceptions.OwnerOfRequest
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -40,6 +41,11 @@ public class ResourceExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<MessageValidationError> methodArgumentNotValid(MethodArgumentNotValidException ex, HttpServletRequest request) {
         return MessageValidationError.of(HttpStatus.BAD_REQUEST, ex.getBindingResult());
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ResourceError> methodArgumentNotValid(HttpMessageNotReadableException ex, HttpServletRequest request) {
+        return MessageValidationError.of(HttpStatus.BAD_REQUEST, ex.getCause().getMessage());
     }
 
     @ExceptionHandler(IllegalStateException.class)
