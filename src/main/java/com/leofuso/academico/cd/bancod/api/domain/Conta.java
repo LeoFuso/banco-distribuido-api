@@ -39,11 +39,11 @@ public class Conta implements Serializable {
     }
 
     public void deposito(Double valor) {
-        this.saldo += Objects.requireNonNull(valor);
+        this.saldo += Conta.requireNonNullAndPositiveValue(valor);
     }
 
     public void saque(Double valor) {
-        Objects.requireNonNull(valor);
+        Conta.requireNonNullAndPositiveValue(valor);
 
         if (valor > this.saldo) {
             throw new IllegalArgumentException(String.format("Conta não possui saldo suficiente: Saldo [ %.2f ]", this.saldo));
@@ -75,5 +75,14 @@ public class Conta implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    private static Double requireNonNullAndPositiveValue(Double value) {
+        final Double nonNullValue = Objects.requireNonNull(value);
+        Double inferiorLimit = 0.0d;
+        if (inferiorLimit.compareTo(nonNullValue) >= 0) {
+            throw new IllegalArgumentException("Valor não pode ser negativo ou 0");
+        }
+        return nonNullValue;
     }
 }
