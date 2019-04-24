@@ -37,7 +37,7 @@ public class ContaController {
     }
 
     @RequestMapping(path = {"/"},
-            method = RequestMethod.GET,
+            method = {RequestMethod.GET, RequestMethod.OPTIONS},
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Resources<Resource<ContaResource>>> findAll() {
 
@@ -61,7 +61,7 @@ public class ContaController {
     }
 
     @RequestMapping(path = {"/{id}/deposito"},
-            method = RequestMethod.PUT,
+            method = {RequestMethod.PUT, RequestMethod.OPTIONS},
             consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> deposito(@NotNull @PathVariable Integer id,
                                          @Valid @RequestBody DepositoCommand command) {
@@ -72,7 +72,7 @@ public class ContaController {
     }
 
     @RequestMapping(path = {"/{id}/saque"},
-            method = RequestMethod.PUT,
+            method = {RequestMethod.PUT, RequestMethod.OPTIONS},
             consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> saque(@NotNull @PathVariable Integer id,
                                       @Valid @RequestBody SaqueCommand command) {
@@ -83,7 +83,7 @@ public class ContaController {
     }
 
     @RequestMapping(path = {"/{id}/transferencia"},
-            method = RequestMethod.PUT,
+            method = {RequestMethod.PUT, RequestMethod.OPTIONS},
             consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> transferencia(@NotNull @PathVariable Integer id,
                                               @Valid @RequestBody TransferenciaCommand command) {
@@ -95,7 +95,7 @@ public class ContaController {
 
 
     @RequestMapping(path = {"/{id}"},
-            method = RequestMethod.GET,
+            method = {RequestMethod.GET, RequestMethod.OPTIONS},
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Resource<ContaResource>> findOneById(@NotNull @PathVariable Integer id) {
 
