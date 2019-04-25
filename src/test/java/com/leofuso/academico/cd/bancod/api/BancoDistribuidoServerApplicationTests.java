@@ -1,4 +1,4 @@
-package com.leofuso.academico.cd.bancod;
+package com.leofuso.academico.cd.bancod.api;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
