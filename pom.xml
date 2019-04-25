@@ -14,6 +14,13 @@
 	<name>banco-distribuido-api</name>
 	<description>Projeto da Disciplina de Computação Distribuída - Server App Banco Distribuído</description>
 
+	<scm>
+		<connection>scm:git:https://github.com/LeoFuso/banco-distribuido-api.git</connection>
+		<url>https://github.com/LeoFuso/banco-distribuido-api</url>
+		<developerConnection>scm:git:https://github.com/LeoFuso/banco-distribuido-api.git</developerConnection>
+		<tag>HEAD</tag>
+	</scm>
+
 	<properties>
 		<java.version>1.8</java.version>
 	</properties>
