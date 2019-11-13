@@ -10,7 +10,7 @@
 
 	<groupId>com.leofuso.academico.computacao-distribuida</groupId>
 	<artifactId>banco-distribuido-api</artifactId>
-	<version>1.0.3-SNAPSHOT</version>
+	<version>v1.0.3.RELEASE</version>
 	<name>banco-distribuido-api</name>
 	<description>Projeto da Disciplina de Computação Distribuída - Server App Banco Distribuído</description>
 
@@ -18,7 +18,7 @@
 		<connection>scm:git:https://github.com/LeoFuso/banco-distribuido-api.git</connection>
 		<url>https://github.com/LeoFuso/banco-distribuido-api</url>
 		<developerConnection>scm:git:https://github.com/LeoFuso/banco-distribuido-api.git</developerConnection>
-		<tag>HEAD</tag>
+		<tag>banco-distribuido-api-v1.0.3.RELEASE</tag>
 	</scm>
 
 	<properties>
