@@ -15,7 +15,7 @@
 	<description>Projeto da Disciplina de Computação Distribuída - Server App Banco Distribuído</description>
 
 	<scm>
-		<connection>scm:git:https://github.com/LeoFuso/banco-distribuido-api.git</connection>
+		<connection>scm:git:git@github.com:LeoFuso/banco-distribuido-api.git</connection>
 		<url>https://github.com/LeoFuso/banco-distribuido-api</url>
 		<developerConnection>scm:git:https://github.com/LeoFuso/banco-distribuido-api.git</developerConnection>
 		<tag>banco-distribuido-api-v1.0.3.RELEASE</tag>
