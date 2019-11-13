@@ -1,24 +1,26 @@
 package com.leofuso.academico.cd.bancod.api.domain.events;
 
 import com.leofuso.academico.cd.bancod.api.domain.Conta;
-import lombok.Getter;
 
-import java.util.Objects;
+import static java.util.Objects.requireNonNull;
 
-@Getter
-public class NovoSaque extends OperacaoBancaria {
+public class NovoSaque
+        extends OperacaoBancaria {
 
     private final Double valor;
 
-    private NovoSaque(Double valor, Conta conta) {
+    private NovoSaque(final Double valor, final Conta conta) {
         super(conta);
-        this.valor = valor;
+        this.valor = requireNonNull(valor);
     }
 
-    public static NovoSaque produce(Double valor, Conta conta) {
-        Objects.requireNonNull(valor, "NovoSaque falhou: valor [ null ] illegal");
+    public static NovoSaque produce(final Double valor, final Conta conta) {
+        requireNonNull(valor, "NovoSaque falhou: valor [ null ] ilegal");
         OperacaoBancaria.requireNonNullValid(conta);
         return new NovoSaque(valor, conta);
     }
 
+    public Double getValor() {
+        return valor;
+    }
 }

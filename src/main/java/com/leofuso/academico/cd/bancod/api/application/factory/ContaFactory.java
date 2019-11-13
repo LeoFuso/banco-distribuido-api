@@ -12,58 +12,63 @@ import com.leofuso.academico.cd.bancod.api.domain.interfaces.ContaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.validation.constraints.NotNull;
-
 @ApplicationFactory
 public class ContaFactory {
 
     private final ContaRepository repository;
 
     @Autowired
-    public ContaFactory(ContaRepository repository) {
+    public ContaFactory(final ContaRepository repository) {
         this.repository = repository;
     }
 
     @Transactional(readOnly = true)
-    public <T extends OperacaoBancaria, C extends OperacaoBancariaCommand> T enrich(C command, Class<T> type) {
+    public <T extends OperacaoBancaria, C extends OperacaoBancariaCommand> T enrich(final C command,
+                                                                                    final Class<T> type) {
 
-        if (command instanceof TransferenciaCommand)
+        if (command instanceof TransferenciaCommand) {
             return enrichTransferencia((TransferenciaCommand) command, type);
+        }
 
         return enrichCommon(command, type);
     }
 
-    private <T extends OperacaoBancaria, C extends OperacaoBancariaCommand> T enrichCommon(C command, Class<T> type) {
+    private <T extends OperacaoBancaria, C extends OperacaoBancariaCommand> T enrichCommon(final C command,
+                                                                                           final Class<T> type) {
 
-        @NotNull final Integer contaId = command.getContaId();
-        @NotNull final Double valor = command.getValor();
+        final Integer contaId = command.getContaId();
+        final Double valor = command.getValor();
 
-        Conta conta = repository.findById(contaId)
-                .orElseThrow(() -> new ComponentNotFoundException(contaId, Conta.class));
+        final Conta conta = repository.findById(contaId)
+                                      .orElseThrow(() -> new ComponentNotFoundException(contaId, Conta.class));
 
         final OperacaoBancaria operacaoBancaria;
 
-        if (type.isAssignableFrom(NovoDeposito.class))
+        if (type.isAssignableFrom(NovoDeposito.class)) {
             operacaoBancaria = NovoDeposito.produce(valor, conta);
-        else if (type.isAssignableFrom(NovoSaque.class))
+        } else if (type.isAssignableFrom(NovoSaque.class)) {
             operacaoBancaria = NovoSaque.produce(valor, conta);
-        else
+        } else {
             throw new ClassCastException("Operação bancária inválida [ " + type.getSimpleName() + " ] ");
+        }
 
         return type.cast(operacaoBancaria);
     }
 
-    private <T extends OperacaoBancaria> T enrichTransferencia(TransferenciaCommand command, Class<T> type) {
+    private <T extends OperacaoBancaria> T enrichTransferencia(final TransferenciaCommand command,
+                                                               final Class<T> type) {
 
-        @NotNull final Integer contaOrigemId = command.getContaOrigemId();
-        @NotNull final Integer contaDestinoId = command.getContaDestinoId();
-        @NotNull final Double valor = command.getValor();
+        final Integer contaOrigemId = command.getContaId();
+        final Integer contaDestinoId = command.getContaDestinoId();
+        final Double valor = command.getValor();
 
-        Conta contaOrigem = repository.findById(contaOrigemId)
-                .orElseThrow(() -> new ComponentNotFoundException(contaOrigemId, Conta.class));
+        final Conta contaOrigem = repository.findById(contaOrigemId)
+                                            .orElseThrow(() -> new ComponentNotFoundException(contaOrigemId,
+                                                                                              Conta.class));
 
-        Conta contaDestino = repository.findById(contaDestinoId)
-                .orElseThrow(() -> new ComponentNotFoundException(contaDestinoId, Conta.class));
+        final Conta contaDestino = repository.findById(contaDestinoId)
+                                             .orElseThrow(() -> new ComponentNotFoundException(contaDestinoId,
+                                                                                               Conta.class));
 
         final NovaTransferencia novaTransferencia = NovaTransferencia.produce(valor, contaOrigem, contaDestino);
         return type.cast(novaTransferencia);

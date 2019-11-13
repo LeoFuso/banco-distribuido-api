@@ -1,12 +1,11 @@
 package com.leofuso.academico.cd.bancod.api.domain.events;
 
 import com.leofuso.academico.cd.bancod.api.domain.Conta;
-import lombok.Getter;
 
 import java.util.Objects;
 
-@Getter
-public class NovaTransferencia extends OperacaoBancaria {
+public class NovaTransferencia
+        extends OperacaoBancaria {
 
     private final Conta contaDestino;
     private final Double valor;
@@ -18,10 +17,18 @@ public class NovaTransferencia extends OperacaoBancaria {
     }
 
     public static NovaTransferencia produce(Double valor, Conta conta, Conta contaDestino) {
-        Objects.requireNonNull(valor, "NovoSaque falhou: valor [ null ] illegal");
+        Objects.requireNonNull(valor, "NovoSaque falhou: valor [ null ] ilegal");
         OperacaoBancaria.requireNonNullValid(conta);
         OperacaoBancaria.requireNonNullValid(contaDestino);
         return new NovaTransferencia(valor, conta, contaDestino);
+    }
+
+    public Conta getContaDestino() {
+        return contaDestino;
+    }
+
+    public Double getValor() {
+        return valor;
     }
 
 }

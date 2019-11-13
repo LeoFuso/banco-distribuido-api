@@ -18,41 +18,43 @@ import org.springframework.util.Assert;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static java.util.Objects.requireNonNull;
+
 @ApplicationFacade
-public class ContaFacadeImpl implements ContaFacade {
+public class ContaFacadeImpl
+        implements ContaFacade {
 
     private final ContaService service;
     private final ContaFactory factory;
 
     @Autowired
-    public ContaFacadeImpl(ContaService service, ContaFactory factory) {
-        this.service = service;
-        this.factory = factory;
+    public ContaFacadeImpl(final ContaService service, final ContaFactory factory) {
+        this.service = requireNonNull(service);
+        this.factory = requireNonNull(factory);
     }
 
     @Override
-    public void deposito(Integer id, DepositoCommand command) {
+    public void deposito(final Integer id, final DepositoCommand command) {
         verificarIntegridade(id, command);
 
-        NovoDeposito novoDeposito = factory.enrich(command, NovoDeposito.class);
+        final NovoDeposito novoDeposito = factory.enrich(command, NovoDeposito.class);
         service.deposito(novoDeposito);
-
     }
 
     @Override
-    public void saque(Integer id, SaqueCommand command) {
+    public void saque(final Integer id, final SaqueCommand command) {
         verificarIntegridade(id, command);
 
-        NovoSaque novoSaque = factory.enrich(command, NovoSaque.class);
+        final NovoSaque novoSaque = factory.enrich(command, NovoSaque.class);
         service.saque(novoSaque);
 
     }
 
     @Override
-    public void transferencia(Integer id, TransferenciaCommand command) {
+    public void transferencia(final Integer id, final TransferenciaCommand command) {
         verificarIntegridade(id, command);
 
-        NovaTransferencia novaTransferencia = factory.enrich(command, NovaTransferencia.class);
+        final NovaTransferencia novaTransferencia = factory.enrich(command, NovaTransferencia.class);
         service.transferencia(novaTransferencia);
 
     }
@@ -60,29 +62,28 @@ public class ContaFacadeImpl implements ContaFacade {
     @Override
     public List<ContaResource> findAll() {
         return service.findAll().stream()
-                .map(ContaResource::from)
-                .collect(Collectors.toList());
+                      .map(ContaResource::from)
+                      .collect(Collectors.toList());
     }
 
     @Override
-    public ContaResource findOneById(Integer id) {
+    public ContaResource findOneById(final Integer id) {
         Assert.notNull(id, "Conta ID não pode ser nulo");
 
-        Conta conta = service.findOneById(id);
-
+        final Conta conta = service.findOneById(id);
         return ContaResource.from(conta);
     }
 
-    private void verificarIntegridade(Integer id, OperacaoBancariaCommand command) {
+    private void verificarIntegridade(final Integer id, final OperacaoBancariaCommand command) {
         Assert.notNull(id, "Conta ID não pode ser nulo");
         Assert.notNull(command, "Comando não pode ser nulo");
 
-        Integer idFound = command.getContaId();
-        boolean idInCommandIsWrong = !id.equals(idFound);
+        final Integer idFound = command.getContaId();
+        final boolean idInCommandIsWrong = !id.equals(idFound);
 
         if (idInCommandIsWrong) {
             throw new OwnerOfRequestNotMatchRequestBody("Conta [ " + id + " ] não corresponde ao " +
-                    "alvo do requerimento [ " + idFound + " ]");
+                                                                "alvo do requerimento [ " + idFound + " ]");
         }
     }
 }

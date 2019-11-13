@@ -1,6 +1,5 @@
 package com.leofuso.academico.cd.bancod.api.domain;
 
-import lombok.Getter;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.Entity;
@@ -10,12 +9,14 @@ import javax.persistence.Id;
 import java.io.Serializable;
 import java.util.Objects;
 
-@Getter
 @Entity
-public class Conta implements Serializable {
+public class Conta
+        implements Serializable {
 
     public static final String ID = "id";
+
     public static final String SALDO = "saldo";
+
     public static final String EMAIL = "email";
 
     @Id
@@ -27,9 +28,10 @@ public class Conta implements Serializable {
     @NaturalId
     private String email;
 
-    Conta() { /* empty */ }
+    @SuppressWarnings("WeakerAccess")
+    Conta() { /* Hibernate */ }
 
-    public static Conta produce(Double saldoInicial, String email) {
+    public static Conta produce(final Double saldoInicial, final String email) {
 
         final Conta novaConta = new Conta();
         novaConta.saldo = Objects.requireNonNull(saldoInicial);
@@ -38,37 +40,42 @@ public class Conta implements Serializable {
         return novaConta;
     }
 
-    public void deposito(Double valor) {
-        this.saldo += Conta.requireNonNullAndPositiveValue(valor);
+    public void deposito(final Double valor) {
+        saldo += Conta.requireNonNullAndPositiveValue(valor);
     }
 
-    public void saque(Double valor) {
+    public void saque(final Double valor) {
         Conta.requireNonNullAndPositiveValue(valor);
 
-        if (valor > this.saldo) {
-            throw new IllegalArgumentException(String.format("Conta não possui saldo suficiente: Saldo [ %.2f ]", this.saldo));
+        if (valor > saldo) {
+            throw new IllegalArgumentException(String.format("Conta não possui saldo suficiente: Saldo [ %.2f ]",
+                                                             saldo));
         }
 
-        this.saldo -= valor;
+        saldo -= valor;
     }
 
-    public void transferencia(Conta destino, Double valor) {
+    public void transferencia(final Conta destino, final Double valor) {
         Objects.requireNonNull(destino);
         Objects.requireNonNull(valor);
 
-        if (this.equals(destino)) {
+        if (equals(destino)) {
             throw new IllegalArgumentException("Transferências internas não são permitidas");
         }
 
-        this.saque(valor);
+        saque(valor);
         destino.deposito(valor);
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Conta conta = (Conta) o;
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        final Conta conta = (Conta) o;
         return Objects.equals(id, conta.id);
     }
 
@@ -77,12 +84,24 @@ public class Conta implements Serializable {
         return Objects.hash(id);
     }
 
-    private static Double requireNonNullAndPositiveValue(Double value) {
+    private static Double requireNonNullAndPositiveValue(final Double value) {
         final Double nonNullValue = Objects.requireNonNull(value);
-        Double inferiorLimit = 0.0d;
+        final Double inferiorLimit = 0.0d;
         if (inferiorLimit.compareTo(nonNullValue) >= 0) {
             throw new IllegalArgumentException("Valor não pode ser negativo ou 0");
         }
         return nonNullValue;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public Double getSaldo() {
+        return saldo;
+    }
+
+    public String getEmail() {
+        return email;
     }
 }

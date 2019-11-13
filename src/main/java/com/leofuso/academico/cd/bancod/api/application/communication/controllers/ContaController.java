@@ -13,7 +13,12 @@ import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -32,7 +37,7 @@ public class ContaController {
     private final ContaFacade facade;
 
     @Autowired
-    public ContaController(ContaFacade facade) {
+    public ContaController(final ContaFacade facade) {
         this.facade = facade;
     }
 
@@ -41,20 +46,27 @@ public class ContaController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Resources<Resource<ContaResource>>> findAll() {
 
-        List<ContaResource> contas = facade.findAll();
+        final List<ContaResource> contas = facade.findAll();
 
-        final List<Resource<ContaResource>> contasResource = contas.stream()
-                .map(contaResource -> {
+        final List<Resource<ContaResource>> contasResource
+                = contas.stream()
+                        .map(contaResource -> {
 
-                    Link umaConta = linkTo(methodOn(ContaController.class).findOneById(contaResource.getId())).withSelfRel();
-                    Link todasAsContas = linkTo(methodOn(ContaController.class).findAll()).withRel("contas");
-                    return new Resource<>(contaResource, umaConta, todasAsContas);
+                            Link umaConta =
+                                    linkTo(methodOn(ContaController.class).findOneById(
+                                            contaResource.getId())).withSelfRel();
+                            Link todasAsContas =
+                                    linkTo(methodOn(ContaController.class).findAll())
+                                            .withRel("contas");
+                            return new Resource<>(contaResource,
+                                                  umaConta,
+                                                  todasAsContas);
 
-                }).collect(Collectors.toList());
+                        }).collect(Collectors.toList());
 
-        Link todasAsContasSelf = linkTo(methodOn(ContaController.class).findAll()).withSelfRel();
+        final Link todasAsContasSelf = linkTo(methodOn(ContaController.class).findAll()).withSelfRel();
 
-        Resources<Resource<ContaResource>> resource = new Resources<>(contasResource, todasAsContasSelf);
+        final Resources<Resource<ContaResource>> resource = new Resources<>(contasResource, todasAsContasSelf);
 
         return ResponseEntity
                 .ok(resource);
@@ -63,8 +75,8 @@ public class ContaController {
     @RequestMapping(path = {"/{id}/deposito"},
             method = {RequestMethod.PUT, RequestMethod.OPTIONS},
             consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> deposito(@NotNull @PathVariable Integer id,
-                                         @Valid @RequestBody DepositoCommand command) {
+    public ResponseEntity<Void> deposito(@NotNull @PathVariable final Integer id,
+                                         @Valid @RequestBody final DepositoCommand command) {
 
         facade.deposito(id, command);
 
@@ -74,22 +86,19 @@ public class ContaController {
     @RequestMapping(path = {"/{id}/saque"},
             method = {RequestMethod.PUT, RequestMethod.OPTIONS},
             consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> saque(@NotNull @PathVariable Integer id,
-                                      @Valid @RequestBody SaqueCommand command) {
-
+    public ResponseEntity<Void> saque(@NotNull @PathVariable final Integer id,
+                                      @Valid @RequestBody final SaqueCommand command) {
         facade.saque(id, command);
-
         return ContaController.responseWithLocationHelper(id);
     }
 
     @RequestMapping(path = {"/{id}/transferencia"},
             method = {RequestMethod.PUT, RequestMethod.OPTIONS},
             consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> transferencia(@NotNull @PathVariable Integer id,
-                                              @Valid @RequestBody TransferenciaCommand command) {
+    public ResponseEntity<Void> transferencia(@NotNull @PathVariable final Integer id,
+                                              @Valid @RequestBody final TransferenciaCommand command) {
 
         facade.transferencia(id, command);
-
         return ContaController.responseWithLocationHelper(id);
     }
 
@@ -97,24 +106,23 @@ public class ContaController {
     @RequestMapping(path = {"/{id}"},
             method = {RequestMethod.GET, RequestMethod.OPTIONS},
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Resource<ContaResource>> findOneById(@NotNull @PathVariable Integer id) {
+    public ResponseEntity<Resource<ContaResource>> findOneById(@NotNull @PathVariable final Integer id) {
 
-        ContaResource conta = facade.findOneById(id);
+        final ContaResource conta = facade.findOneById(id);
+        final Link umaConta = linkTo(methodOn(ContaController.class).findOneById(id)).withSelfRel();
+        final Link todasAsContas = linkTo(methodOn(ContaController.class).findAll()).withRel("contas");
 
-        Link umaConta = linkTo(methodOn(ContaController.class).findOneById(id)).withSelfRel();
-        Link todasAsContas = linkTo(methodOn(ContaController.class).findAll()).withRel("contas");
-
-        Resource<ContaResource> resource = new Resource<>(conta, umaConta, todasAsContas);
+        final Resource<ContaResource> resource = new Resource<>(conta, umaConta, todasAsContas);
 
         return ResponseEntity
                 .ok(resource);
     }
 
-    private static ResponseEntity<Void> responseWithLocationHelper(Integer id) {
+    private static ResponseEntity<Void> responseWithLocationHelper(final Integer id) {
 
-        ControllerLinkBuilder controllerLinkBuilder = linkTo(methodOn(ContaController.class).findOneById(id));
-        URI uri = controllerLinkBuilder.toUri();
-        HttpHeaders headers = new HttpHeaders();
+        final ControllerLinkBuilder controllerLinkBuilder = linkTo(methodOn(ContaController.class).findOneById(id));
+        final URI uri = controllerLinkBuilder.toUri();
+        final HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, HttpHeaders.LOCATION);
 
         return ResponseEntity

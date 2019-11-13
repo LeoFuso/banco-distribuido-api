@@ -1,24 +1,26 @@
 package com.leofuso.academico.cd.bancod.api.domain.events;
 
 import com.leofuso.academico.cd.bancod.api.domain.Conta;
-import lombok.Getter;
 import org.springframework.lang.Nullable;
 
 import java.util.Objects;
 
-@Getter
 @DomainEvent
 public abstract class OperacaoBancaria {
 
     private final Conta conta;
 
-    OperacaoBancaria(Conta conta) {
-        this.conta = conta;
+    OperacaoBancaria(final Conta conta) {
+        this.conta = requireNonNullValid(conta);
     }
 
-    static void requireNonNullValid(@Nullable Conta conta) {
+    static Conta requireNonNullValid(@Nullable final Conta conta) {
         Objects.requireNonNull(conta, "Conta não pode ser [ null ]");
         Objects.requireNonNull(conta.getId(), "Conta ID não pode ser [ null ]");
+        return conta;
     }
 
+    public Conta getConta() {
+        return conta;
+    }
 }

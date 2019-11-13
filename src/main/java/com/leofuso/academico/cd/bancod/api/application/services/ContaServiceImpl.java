@@ -13,19 +13,21 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static java.util.Objects.requireNonNull;
+
 @Service
 public class ContaServiceImpl implements ContaService {
 
     private final ContaRepository repository;
 
     @Autowired
-    public ContaServiceImpl(ContaRepository repository) {
-        this.repository = repository;
+    public ContaServiceImpl(final ContaRepository repository) {
+        this.repository = requireNonNull(repository);
     }
 
     @Override
     @Transactional
-    public void deposito(NovoDeposito event) {
+    public void deposito(final NovoDeposito event) {
         final Conta conta = event.getConta();
         final Double valor = event.getValor();
         conta.deposito(valor);
@@ -34,7 +36,7 @@ public class ContaServiceImpl implements ContaService {
 
     @Override
     @Transactional
-    public void saque(NovoSaque event) {
+    public void saque(final NovoSaque event) {
         final Conta conta = event.getConta();
         final Double valor = event.getValor();
         conta.saque(valor);
@@ -43,7 +45,7 @@ public class ContaServiceImpl implements ContaService {
 
     @Override
     @Transactional
-    public void transferencia(NovaTransferencia event) {
+    public void transferencia(final NovaTransferencia event) {
         final Conta conta = event.getConta();
         final Conta contaDestino = event.getContaDestino();
         final Double valor = event.getValor();
@@ -54,9 +56,9 @@ public class ContaServiceImpl implements ContaService {
 
     @Override
     @Transactional(readOnly = true)
-    public Conta findOneById(Integer contaId) {
+    public Conta findOneById(final Integer contaId) {
         return repository.findById(contaId)
-                .orElseThrow(() -> new ComponentNotFoundException(contaId, Conta.class));
+                         .orElseThrow(() -> new ComponentNotFoundException(contaId, Conta.class));
     }
 
     @Override

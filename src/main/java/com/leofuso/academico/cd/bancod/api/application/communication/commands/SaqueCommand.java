@@ -2,29 +2,34 @@ package com.leofuso.academico.cd.bancod.api.application.communication.commands;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Getter;
 
-import javax.validation.constraints.NotNull;
-
-@Getter
 @CommandApplicationEvent
-public class SaqueCommand implements OperacaoBancariaCommand {
+public class SaqueCommand
+        implements OperacaoBancariaCommand {
 
-    @NotNull
     private final Integer contaId;
-
-    @NotNull
     private final Double valor;
 
-    private SaqueCommand(@NotNull Integer contaId,
-                         @NotNull Double valor) {
+    private SaqueCommand(final Integer contaId,
+                         final Double valor) {
         this.contaId = contaId;
         this.valor = valor;
     }
 
     @JsonCreator
-    public static SaqueCommand create(@JsonProperty("conta_id") Integer contaId,
-                                      @JsonProperty("valor") Double valor) {
+    @SuppressWarnings("unused")
+    public static SaqueCommand create(@JsonProperty("conta_id") final Integer contaId,
+                                       @JsonProperty("valor") final Double valor) {
         return new SaqueCommand(contaId, valor);
+    }
+
+    @Override
+    public Integer getContaId() {
+        return contaId;
+    }
+
+    @Override
+    public Double getValor() {
+        return valor;
     }
 }

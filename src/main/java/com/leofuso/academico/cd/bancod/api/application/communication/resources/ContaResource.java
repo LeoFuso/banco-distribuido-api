@@ -7,7 +7,8 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @ApplicationRESTResource
-public class ContaResource implements Serializable {
+public class ContaResource
+        implements Serializable {
 
     private final Integer id;
     private final Double saldo;

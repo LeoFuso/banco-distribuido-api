@@ -7,16 +7,17 @@ import org.springframework.validation.BindingResult;
 import java.util.List;
 import java.util.stream.Collectors;
 
-class MessageValidationErrorBuilder extends AbstractResourceErrorBuilder<MessageValidationErrorBuilder, MessageValidationError> {
+class MessageValidationErrorBuilder
+        extends AbstractResourceErrorBuilder<MessageValidationErrorBuilder, MessageValidationError> {
 
-    private List<FieldMessageError> errors;
+    private final List<FieldMessageError> errors;
 
-    MessageValidationErrorBuilder(HttpStatus status, String cause, BindingResult bindingResult) {
+    MessageValidationErrorBuilder(final HttpStatus status, final String cause, final BindingResult bindingResult) {
         super(status, cause);
 
-        this.errors = bindingResult.getFieldErrors().stream()
-                .map(FieldMessageError::of)
-                .collect(Collectors.toList());
+        errors = bindingResult.getFieldErrors().stream()
+                              .map(FieldMessageError::of)
+                              .collect(Collectors.toList());
     }
 
     @Override

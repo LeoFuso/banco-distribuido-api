@@ -19,42 +19,46 @@ import javax.servlet.http.HttpServletRequest;
 public class ResourceExceptionHandler {
 
     @ExceptionHandler(ComponentNotFoundException.class)
-    public ResponseEntity<ResourceError> objectNotFound(ComponentNotFoundException ex, HttpServletRequest request) {
+    public ResponseEntity<ResourceError> objectNotFound(final ComponentNotFoundException ex, final HttpServletRequest request) {
         return ResourceError.of(HttpStatus.NOT_FOUND, ex.getMessage());
     }
 
     @ExceptionHandler(DuplicateComponentException.class)
-    public ResponseEntity<ResourceError> duplicatedObject(DuplicateComponentException ex, HttpServletRequest request) {
+    public ResponseEntity<ResourceError> duplicatedObject(final DuplicateComponentException ex, final HttpServletRequest request) {
         return ResourceError.of(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<ResourceError> dataIntegrityViolation(DataIntegrityViolationException ex, HttpServletRequest request) {
+    public ResponseEntity<ResourceError> dataIntegrityViolation(final DataIntegrityViolationException ex,
+                                                                final HttpServletRequest request) {
         return ResourceError.of(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
 
     @ExceptionHandler(OwnerOfRequestNotMatchRequestBody.class)
-    public ResponseEntity<ResourceError> ownerOfRequestNotMatchRequestBodyError(OwnerOfRequestNotMatchRequestBody ex, HttpServletRequest request) {
+    public ResponseEntity<ResourceError> ownerOfRequestNotMatchRequestBodyError(final OwnerOfRequestNotMatchRequestBody ex,
+                                                                                final HttpServletRequest request) {
         return ResourceError.of(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<MessageValidationError> methodArgumentNotValid(MethodArgumentNotValidException ex, HttpServletRequest request) {
+    public ResponseEntity<MessageValidationError> methodArgumentNotValid(final MethodArgumentNotValidException ex,
+                                                                         final HttpServletRequest request) {
         return MessageValidationError.of(HttpStatus.BAD_REQUEST, ex.getBindingResult());
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<ResourceError> methodArgumentNotValid(HttpMessageNotReadableException ex, HttpServletRequest request) {
+    public ResponseEntity<ResourceError> methodArgumentNotValid(final HttpMessageNotReadableException ex,
+                                                                final HttpServletRequest request) {
         return MessageValidationError.of(HttpStatus.BAD_REQUEST, ex.getCause().getMessage());
     }
 
     @ExceptionHandler(IllegalStateException.class)
-    public ResponseEntity<ResourceError> illegalStateError(IllegalStateException ex, HttpServletRequest request) {
+    public ResponseEntity<ResourceError> illegalStateError(final IllegalStateException ex, final HttpServletRequest request) {
         return ResourceError.of(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<ResourceError> illegalArgumentError(IllegalArgumentException ex, HttpServletRequest request) {
+    public ResponseEntity<ResourceError> illegalArgumentError(final IllegalArgumentException ex, final HttpServletRequest request) {
         return ResourceError.of(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
 }

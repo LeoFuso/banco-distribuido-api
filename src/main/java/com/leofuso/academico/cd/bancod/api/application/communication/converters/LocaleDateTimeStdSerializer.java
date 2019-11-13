@@ -14,19 +14,21 @@ public class LocaleDateTimeStdSerializer extends StdSerializer<LocalDateTime> {
         this(null);
     }
 
-    private LocaleDateTimeStdSerializer(Class<LocalDateTime> t) {
+    private LocaleDateTimeStdSerializer(final Class<LocalDateTime> t) {
         super(t);
     }
 
     @Override
-    public void serialize(LocalDateTime value, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
+    public void serialize(final LocalDateTime value,
+                          final JsonGenerator jsonGenerator,
+                          final SerializerProvider serializerProvider) throws IOException {
 
         if (value == null) {
             jsonGenerator.writeString(String.valueOf(0L));
             return;
         }
 
-        long epochMilli = value
+        final long epochMilli = value
                 .atZone(ZoneId.systemDefault())
                 .toInstant().toEpochMilli();
 
